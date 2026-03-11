@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Letter Day Display</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      overflow: hidden;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #letter-day {
+      font-family: 'Copperplate Gothic 29 AB', Copperplate, 'Copperplate Gothic Light', fantasy, serif;
+      font-size: 119px;
+      font-weight: normal;
+      color: black; /* Change color if needed */
+      background: transparent;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="letter-day">-</div>
+
+  <script>
+    // List of holiday dates (YYYY-MM-DD)
+    const holidays = [
+      "2025-12-24",
+      "2025-12-25",
+      "2025-12-26",
+      "2025-12-27",
+      "2025-12-28",
+      "2025-12-29",
+      "2025-12-30",
+      "2025-12-31",
+      "2026-01-01",
+      "2026-01-02",
+      "2026-01-19",
+      "2026-01-28",
+      "2026-01-30",
+      "2026-02-16",
+      "2026-03-30",
+      "2026-03-31",
+      "2026-04-01",
+      "2026-04-02",
+      "2026-04-03",
+      "2026-04-06",
+      "2026-05-19",
+      "2026-05-25",
+    ];
+
+    function isWeekend(date) {
+      const day = date.getDay();
+      return day === 0 || day === 6; // Sunday=0, Saturday=6
+    }
+
+    function isHoliday(date) {
+      const dateStr = date.toISOString().slice(0, 10);
+      return holidays.includes(dateStr);
+    }
+
+    function getLetterDay(date) {
+      if (isWeekend(date) || isHoliday(date)) {
+        return "-";
+      }
+      const startDate = new Date("2025-12-22");
+      const startLetter = "B";
+
+      let count = 0;
+      let current = new Date(startDate);
+
+      while (current <= date) {
+        if (!isWeekend(current) && !isHoliday(current)) {
+          count++;
+        }
+        current.setDate(current.getDate() + 1);
+      }
+
+      // If startLetter is A, odd count = A, even count = B
+      return (count % 2 === 1) ? "A" : "B";
+    }
+
+    const today = new Date();
+    document.getElementById("letter-day").textContent = getLetterDay(today);
+  </script>
+</body>
+</html>
